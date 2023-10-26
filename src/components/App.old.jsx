@@ -1,70 +1,79 @@
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
 
-import { useState } from 'react';
-
+import { Component } from 'react';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { ContactForm } from './ContactForm/ContactForm';
-import { useEffect } from 'react';
 
-export const App = () => {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-
-  useEffect(() => {
-    localStorage.setItem('setContacts', JSON.stringify(contacts));
-  }, [contacts]);
-
-  useEffect(() => {
-    localStorage.setItem('filter', JSON.stringify(filter));
-  }, [filter]);
-
-  // componentDidMount() {
-  //   const savedContacts = localStorage.getItem('setContacts');
-  //   const savedFilter = localStorage.getItem('filter');
-
-  //   if (savedContacts !== null) {
-  //     const listContacts = JSON.parse(savedContacts);
-  //     this.setState({ contacts: listContacts });
-  //   }
-
-  //   if (savedFilter !== null) {
-  //     const newFilters = JSON.parse(savedFilter);
-  //     this.setState({ filter: newFilters });
-  //   }
-  // }
-
-  const changeFilter = newFilter => {
-    setFilter(newFilter);
+export class App extends Component {
+  state = {
+    contacts: [],
+    filter: '',
+    name: '',
+    number: '',
   };
 
-  const resetFilter = clearFilter => {
-    setFilter('');
+  componentDidMount() {
+    const savedContacts = localStorage.getItem('setContacts');
+    const savedFilter = localStorage.getItem('filter');
+
+    if (savedContacts !== null) {
+      const listContacts = JSON.parse(savedContacts);
+      this.setState({ contacts: listContacts });
+    }
+
+    if (savedFilter !== null) {
+      const newFilters = JSON.parse(savedFilter);
+      this.setState({ filter: newFilters });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('setContacts', JSON.stringify(this.state.contacts));
+    }
+
+    if (prevState.filter !== this.state.filter) {
+      localStorage.setItem('filter', JSON.stringify(this.state.filter));
+    }
+  }
+
+  changeFilter = newFilter => {
+    this.setState({
+      filter: newFilter,
+    });
   };
 
-  const contactsFilter = () => {
-    return filter(item => {
-      const filters = filter.toLowerCase();
-      const hasContacts = item.name.toLowerCase().includes(filters);
-      if (filter === '') {
+  resetFilter = clearFilter => {
+    this.setState({
+      filter: '',
+    });
+  };
+
+  getContactsFilter = () => {
+    const contacts = this.state.contacts;
+    return contacts.filter(item => {
+      const filter = this.state.filter.toLowerCase();
+      const hasContacts = item.name.toLowerCase().includes(filter);
+      if (this.state.filter === '') {
         return true;
       }
       return hasContacts;
     });
   };
 
-  const deleteItemContact = Id => {
-    setContacts(prevState => prevState.filter(item => item.id !== Id));
+  deleteItemContact = Id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(item => item.id !== Id),
+    }));
   };
 
-  const addContact = newContact => {
+  addContact = newContact => {
     let flag = 0;
 
     // eslint-disable-next-line array-callback-return
-    contacts.map(i => {
+    this.state.contacts.map(i => {
       if (i.name === newContact.name) {
         return (flag = 1);
       }
@@ -76,21 +85,29 @@ export const App = () => {
         is already in contacts`
       );
     }
-
-    setContacts(prevState => [...prevState, { ...newContact, id: nanoid() }]);
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, { ...newContact, id: nanoid() }],
+    }));
   };
 
-  return (
-    <div>
-      <h1>Poneboock</h1>
-      <ContactForm onAdd={addContact} />
-      <h2>Contacts</h2>
-      <Filter
-        filter={filter}
-        onChangeFilter={changeFilter}
-        onResetFilter={resetFilter}
-      />
-      <ContactList contacts={contactsFilter} onDelete={deleteItemContact} />
-    </div>
-  );
-};
+  render() {
+    const contactsFilter = this.getContactsFilter();
+
+    return (
+      <div>
+        <h1>Poneboock</h1>
+        <ContactForm onAdd={this.addContact} />
+        <h2>Contacts</h2>
+        <Filter
+          filter={this.state.filter}
+          onChangeFilter={this.changeFilter}
+          onResetFilter={this.resetFilter}
+        />
+        <ContactList
+          contacts={contactsFilter}
+          onDelete={this.deleteItemContact}
+        />
+      </div>
+    );
+  }
+}
