@@ -2,6 +2,8 @@ import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import React from 'react';
 import { ButAdd, StyledForm, StyledInput } from './ContactForm.styled';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
 
 const phoneRegex = RegExp(/^\(?([0-9]{3})[-. ]?([0-9]{2})[-. ]?([0-9]{2})$/);
 
@@ -16,6 +18,10 @@ const formShema = Yup.object().shape({
 });
 
 export const ContactForm = ({ onAdd }) => {
+  const dispatch = useDispatch();
+  const handleAdd = values => {
+    dispatch(addContact(values));
+  };
   return (
     <Formik
       initialValues={{
@@ -24,7 +30,9 @@ export const ContactForm = ({ onAdd }) => {
       }}
       validationSchema={formShema}
       onSubmit={(values, actions) => {
-        onAdd(values);
+        // onAdd(values);
+        // console.log(values);
+        dispatch(() => handleAdd(values));
         actions.resetForm();
       }}
     >

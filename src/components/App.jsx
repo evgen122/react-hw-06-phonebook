@@ -15,76 +15,81 @@ export const App = () => {
     return [];
   });
 
-  const [filter, setFilter] = useState(() => {
-    const savedFilter = localStorage.getItem('filter');
-    if (savedFilter !== null) {
-      return JSON.parse(savedFilter);
-    }
-    return '';
-  });
+  // const [filter, setFilter] = useState(() => {
+  //   const savedFilter = localStorage.getItem('filter');
+  //   if (savedFilter !== null) {
+  //     return JSON.parse(savedFilter);
+  //   }
+  //   return '';
+  // });
 
   useEffect(() => {
     localStorage.setItem('setContacts', JSON.stringify(contacts));
   }, [contacts]);
 
-  useEffect(() => {
-    localStorage.setItem('filter', JSON.stringify(filter));
-  }, [filter]);
+  // useEffect(() => {
+  //   localStorage.setItem('filter', JSON.stringify(filter));
+  // }, [filter]);
 
-  const changeFilter = newFilter => {
-    setFilter(newFilter);
-  };
+  // const changeFilter = newFilter => {
+  //   setFilter(newFilter);
+  // };
 
-  const resetFilter = clearFilter => {
-    setFilter('');
-  };
+  // const resetFilter = clearFilter => {
+  //   setFilter('');
+  // };
 
-  const contactsFilter = () => {
-    return contacts.filter(item => {
-      const hasContacts = item.name
-        .toLowerCase()
-        .includes(filter.toLowerCase());
-      if (filter === '') {
-        return true;
-      }
-      return hasContacts;
-    });
-  };
+  // const contactsFilter = () => {
+  //   return contacts.filter(item => {
+  //     const hasContacts = item.name
+  //       .toLowerCase()
+  //       .includes(filter.toLowerCase());
+  //     if (filter === '') {
+  //       return true;
+  //     }
+  //     return hasContacts;
+  //   });
+  // };
 
-  const deleteItemContact = Id => {
-    setContacts(prevState => prevState.filter(item => item.id !== Id));
-  };
+  // const deleteItemContact = Id => {
+  //   setContacts(prevState => prevState.filter(item => item.id !== Id));
+  // };
 
-  const addContact = newContact => {
-    let flag = 0;
+  // const addContact = newContact => {
+  //   let flag = 0;
 
-    // eslint-disable-next-line array-callback-return
-    contacts.map(i => {
-      if (i.name === newContact.name) {
-        return (flag = 1);
-      }
-    });
+  //   // eslint-disable-next-line array-callback-return
+  //   contacts.map(i => {
+  //     if (i.name === newContact.name) {
+  //       return (flag = 1);
+  //     }
+  //   });
 
-    if (flag === 1) {
-      return Notiflix.Notify.warning(
-        `${newContact.name}
-        is already in contacts`
-      );
-    }
-    setContacts(prevState => [...contacts, { ...newContact, id: nanoid() }]);
-  };
+  //   if (flag === 1) {
+  //     return Notiflix.Notify.warning(
+  //       `${newContact.name}
+  //       is already in contacts`
+  //     );
+  //   }
+  //   setContacts(prevState => [...contacts, { ...newContact, id: nanoid() }]);
+  // };
 
   return (
     <div>
       <h1>Poneboock</h1>
-      <ContactForm onAdd={addContact} />
+      <ContactForm
+      // onAdd={ addContact }
+      />
       <h2>Contacts</h2>
       <Filter
-        filter={filter}
-        onChangeFilter={changeFilter}
-        onResetFilter={resetFilter}
+      // filter={filter}
+      // onChangeFilter={changeFilter}
+      // onResetFilter={resetFilter}
       />
-      <ContactList contacts={contactsFilter()} onDelete={deleteItemContact} />
+      <ContactList
+      // contacts={contactsFilter()}
+      // onDelete={ deleteItemContact }
+      />
     </div>
   );
 };

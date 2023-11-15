@@ -1,12 +1,19 @@
 import { ItemContact } from 'components/ItemContact/ItemContact';
 import { ItemList } from './ContactList.styled';
+import { useSelector } from 'react-redux';
+import { contactsFilter } from 'redux/actions';
 
-export const ContactList = ({ contacts, onDelete }) => {
+export const ContactList = () => {
+  const contacts = useSelector(state => state.contacts);
+  const filter = useSelector(state => state.filter);
+
+  const filters = contactsFilter(contacts, filter);
+  // console.log(contact);
   return (
     <ul>
-      {contacts.map(i => (
+      {filters.map(i => (
         <ItemList key={i.id}>
-          <ItemContact item={i} onDelete={onDelete} />
+          <ItemContact item={i} />
         </ItemList>
       ))}
     </ul>
