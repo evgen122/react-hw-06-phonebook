@@ -18,11 +18,11 @@ const formShema = Yup.object().shape({
     .required('Phone is required'),
 });
 
-export const ContactForm = ({ onAdd }) => {
+export const ContactForm = () => {
   const contacts = useSelector(state => state.contacts);
   const dispatch = useDispatch();
 
-  const handleAdd = values => {
+  const examinationAdd = values => {
     let flag = 0;
 
     // eslint-disable-next-line array-callback-return
@@ -49,9 +49,7 @@ export const ContactForm = ({ onAdd }) => {
       }}
       validationSchema={formShema}
       onSubmit={(values, actions) => {
-        // onAdd(values);
-        // console.log(values);
-        dispatch(() => handleAdd(values));
+        dispatch(() => examinationAdd(values, contacts));
         actions.resetForm();
       }}
     >

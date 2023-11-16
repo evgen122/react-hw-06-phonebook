@@ -6,6 +6,7 @@ export const Filter = () => {
   const dispatch = useDispatch();
   const onChangeFilter = newFilter => dispatch(changeFilter(newFilter));
   const onResetFilter = () => dispatch(resetFilter());
+
   return (
     <div>
       <p>Find contacts by name</p>
