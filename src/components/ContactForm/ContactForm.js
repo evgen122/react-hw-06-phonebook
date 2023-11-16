@@ -2,8 +2,9 @@ import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import React from 'react';
 import { ButAdd, StyledForm, StyledInput } from './ContactForm.styled';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contactsSlice';
+import Notiflix from 'notiflix';
 
 const phoneRegex = RegExp(/^\(?([0-9]{3})[-. ]?([0-9]{2})[-. ]?([0-9]{2})$/);
 
@@ -18,10 +19,28 @@ const formShema = Yup.object().shape({
 });
 
 export const ContactForm = ({ onAdd }) => {
+  const contacts = useSelector(state => state.contacts);
   const dispatch = useDispatch();
+
   const handleAdd = values => {
+    let flag = 0;
+
+    // eslint-disable-next-line array-callback-return
+    contacts.map(i => {
+      if (i.name === values.name) {
+        return (flag = 1);
+      }
+    });
+
+    if (flag === 1) {
+      return Notiflix.Notify.warning(
+        `${values.name}
+        is already in contacts`
+      );
+    }
     dispatch(addContact(values));
   };
+
   return (
     <Formik
       initialValues={{

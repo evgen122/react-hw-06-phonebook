@@ -27,10 +27,10 @@ import Notiflix from 'notiflix';
 //     // },
 //   };
 // };
-export const contactsFilter = (contacts, filter) => {
+export const contactsFilter = (contacts, filters) => {
   return contacts.filter(item => {
-    const hasContacts = item.name.toLowerCase().includes(filter.toLowerCase());
-    if (filter === '') {
+    const hasContacts = item.name.toLowerCase().includes(filters.toLowerCase());
+    if (filters === '') {
       return true;
     }
     return hasContacts;

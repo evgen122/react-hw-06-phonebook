@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeFilter, resetFilter } from 'redux/filterSlice';
 
 export const Filter = () => {
-  const filter = useSelector(state => state.filter);
+  const filters = useSelector(state => state.filter);
   const dispatch = useDispatch();
   const onChangeFilter = newFilter => dispatch(changeFilter(newFilter));
   const onResetFilter = () => dispatch(resetFilter());
@@ -11,7 +11,7 @@ export const Filter = () => {
       <p>Find contacts by name</p>
       <input
         type="text"
-        value={filter}
+        value={filters}
         onChange={evt => onChangeFilter(evt.target.value)}
       />
       <button onClick={onResetFilter}>Reset</button>

@@ -15,31 +15,35 @@ const contactsSlice = createSlice({
   reducers: {
     addContact(state, action) {
       // console.log(action.payload);
-      let flag = 0;
 
-      // eslint-disable-next-line array-callback-return
-      state.map(i => {
-        if (i.name === action.payload.name) {
-          return (flag = 1);
-        }
-      });
+      // let flag = 0;
 
-      if (flag === 1) {
-        return Notiflix.Notify.warning(
-          `${action.payload.name}
-        is already in contacts`
-        );
-      }
+      // // eslint-disable-next-line array-callback-return
+      // state.map(i => {
+      //   if (i.name === action.payload.name) {
+      //     return (flag = 1);
+      //   }
+      // });
+
+      // if (flag === 1) {
+      //   return Notiflix.Notify.warning(
+      //     `${action.payload.name}
+      //   is already in contacts`
+      //   );
+      // }
+
       // state(contacts => [...contacts, { ...action.payload, id: nanoid() }]);
       // state = [...state.contacts, { ...action.payload, id: nanoid() }];
       state.push({ ...action.payload, id: nanoid() });
+      localStorage.setItem('setContacts', JSON.stringify(state));
     },
 
     deleteContact(state, action) {
-      // state = state.filter(contact => contact.id !== action.payload);
+      // state = state.filter(el => el.id !== action.payload);
 
       const index = state.findIndex(contact => contact.id === action.payload);
       state.splice(index, 1);
+      localStorage.setItem('setContacts', JSON.stringify(state));
     },
   },
 });

@@ -7,13 +7,13 @@ import { Filter } from './Filter/Filter';
 import { ContactForm } from './ContactForm/ContactForm';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    const savedContacts = localStorage.getItem('setContacts');
-    if (savedContacts !== null) {
-      return JSON.parse(savedContacts);
-    }
-    return [];
-  });
+  // const [contacts, setContacts] = useState(() => {
+  //   const savedContacts = localStorage.getItem('setContacts');
+  //   if (savedContacts !== null) {
+  //     return JSON.parse(savedContacts);
+  //   }
+  //   return [];
+  // });
 
   // const [filter, setFilter] = useState(() => {
   //   const savedFilter = localStorage.getItem('filter');
@@ -23,9 +23,9 @@ export const App = () => {
   //   return '';
   // });
 
-  useEffect(() => {
-    localStorage.setItem('setContacts', JSON.stringify(contacts));
-  }, [contacts]);
+  // useEffect(() => {
+  //   localStorage.setItem('setContacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
   // useEffect(() => {
   //   localStorage.setItem('filter', JSON.stringify(filter));
